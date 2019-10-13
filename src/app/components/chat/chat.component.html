@@ -2,17 +2,17 @@
   <div class="card-header">
     <ul class="nav nav-pills card-header-pills">
       <li class="nav-item mr-3">
-        <button class="btn btn-success" type="button">Conectar</button>
+        <button class="btn btn-success" type="button" (click)="conectar()" *ngIf="!conectado">Conectar</button>
       </li>
       <li class="nav-item">
-        <button class="btn btn-warning" type="button">Cerrar footer</button>
+        <button class="btn btn-warning" type="button" (click)="desconectar()" *ngIf="conectado">Cerrar footer</button>
       </li>
     </ul>
   </div>
-  <div class="card-body" style="overflow-y: scroll; height: 360px;">
+  <div class="card-body" style="overflow-y: scroll; height: 360px;" *ngIf="conectado">
 
   </div>
-  <div class="card-footer">
+  <div class="card-footer" *ngIf="conectado">
     <form class="form-inline">
       <div class="form-group mx-3">
         <input type="text" class="form-control" placeholder="Envia un mensaje..." name="texto">
