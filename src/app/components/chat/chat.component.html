@@ -1,8 +1,11 @@
 <div class="card">
   <div class="card-header">
     <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item mr-3" *ngIf="!conectado">
+          <input type="text" [(ngModel)]="mensaje.username" class="form-control" placeholder="Envia tu nombre..." name="username">
+        </li>
       <li class="nav-item mr-3">
-        <button class="btn btn-success" type="button" (click)="conectar()" *ngIf="!conectado">Conectar</button>
+        <button class="btn btn-success" type="button" (click)="conectar()" *ngIf="!conectado" [disabled]="!mensaje.username">Conectar</button>
       </li>
       <li class="nav-item">
         <button class="btn btn-warning" type="button" (click)="desconectar()" *ngIf="conectado">Cerrar</button>
@@ -12,7 +15,8 @@
   <div class="card-body" style="overflow-y: scroll; height: 360px;" *ngIf="conectado">
     <ul class="list-group list-group-flush">
       <li class="list-group-item list-group-item-light" *ngFor="let mensaje of listaMensajes">
-        {{mensaje.fecha | date:'shortTime'}} {{mensaje.texto}}
+        <span *ngIf="mensaje.tipo=='NUEVO_USUARIO'">{{mensaje.fecha | date:'shortTime'}} <span [ngStyle]="{'color': mensaje.color}">@{{mensaje.username}}</span> {{mensaje.texto}}</span>
+        <span *ngIf="mensaje.tipo=='MENSAJE'">{{mensaje.fecha | date:'shortTime'}} <span [ngStyle]="{'color': mensaje.color}">@{{mensaje.username}}</span> dice {{mensaje.texto}}</span>
       </li>
     </ul>
   </div>

@@ -30,9 +30,18 @@ export class ChatComponent implements OnInit {
       this.client.subscribe('/chat/mensaje', (e) => {
         let mensajeRecibido = JSON.parse(e.body) as Mensaje;
         mensajeRecibido.fecha = new Date(mensajeRecibido.fecha);
+
+        if (!this.mensaje.color 
+            && mensajeRecibido.tipo == 'NUEVO_USUARIO'
+            && this.mensaje.username == mensajeRecibido.username) {
+              this.mensaje.color = mensajeRecibido.color;
+        }
         console.log(mensajeRecibido);
         this.listaMensajes.push(mensajeRecibido);
       });
+
+      this.mensaje.tipo = 'NUEVO_USUARIO';
+      this.client.publish({destination: '/app/mensaje', body: JSON.stringify(this.mensaje)});
     }
 
     this.client.onDisconnect = (frame) => {
@@ -46,10 +55,12 @@ export class ChatComponent implements OnInit {
   }
 
   desconectar(): void {
+    this.mensaje.username = null;
     this.client.deactivate();
   }
 
   enviarMensaje(): void {
+    this.mensaje.tipo = 'MENSAJE';
     this.client.publish({destination: '/app/mensaje', body: JSON.stringify(this.mensaje)});
     this.mensaje.texto = '';
   }
