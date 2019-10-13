@@ -20,7 +20,7 @@ export class ChatComponent implements OnInit {
     }
 
     this.client.onConnect = (frame) => {
-      console.log('Conectados: ' + this.client.connected + ' : ' + frame);
+      console.log('Conectados= ' + this.client.connected + ' : ' + frame);
     }
 
     this.client.activate();
